@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 require('dotenv').config();
 // Connect to MongoDB
+mongoose.connection.collection('Cources').drop();
+
 mongoose.connect(process.env.MONGO_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -22,7 +24,7 @@ const UserSchema = new mongoose.Schema({
     password: String,
     purchaseCources: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref:'Course'
+        ref:'Courses'
     }]
 });
 
@@ -36,10 +38,10 @@ const CourseSchema = new mongoose.Schema({
 
 const Admin = mongoose.model('Admin', AdminSchema);
 const User = mongoose.model('User', UserSchema);
-const Course = mongoose.model('Course', CourseSchema);
+const Courses = mongoose.model('Courses', CourseSchema);
 
 module.exports = {
     Admin,
     User,
-    Course
+    Courses
 }
