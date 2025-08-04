@@ -1,13 +1,24 @@
 const mongoose = require('mongoose');
 require('dotenv').config();
 // Connect to MongoDB
-mongoose.connection.collection('Cources').drop();
 
 mongoose.connect(process.env.MONGO_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
-.then(() => console.log('✅ MongoDB connected'))
+    .then(async () => {
+        console.log('✅ MongoDB connected')
+        try {
+            await mongoose.connection.db.collection('courses').drop(); // name in lowercase
+            console.log('🗑️ "courses" collection dropped');
+        } catch (err) {
+            if (err.code === 26) {
+                console.log('ℹ️ "courses" collection does not exist');
+            } else {
+                console.error('❌ Error dropping collection:', err);
+            }
+        }
+    })
 .catch(err => console.error('❌ MongoDB connection error:', err));
 
 
