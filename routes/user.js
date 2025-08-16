@@ -33,10 +33,24 @@ router.get('/courses', async (req, res) => {
     const response = await Courses.find({});
     res.json(response)
 });
+router.post('/courses/:courseId', userMiddleware, async (req, res) => {
+    try {
+        const courseId = req.params.courseId;
+        const username = req.headers.username;
 
-router.post('/courses/:courseId', userMiddleware, (req, res) => {
-    // Implement course purchase logic
+        const result = await User.updateOne(
+            { username: username },
+            { $push: { purchasedCources: courseId } }
+        );
+
+            res.json({ msg: "Course added successfully" });
+        
+    } catch (err) {
+        res.status(500).json({ error: "Database error", details: err.message });
+    }
 });
+
+
 
 router.get('/purchasedCourses', userMiddleware, (req, res) => {
     // Implement fetching purchased courses logic

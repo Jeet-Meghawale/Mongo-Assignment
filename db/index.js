@@ -8,16 +8,16 @@ mongoose.connect(process.env.MONGO_URL, {
 })
     .then(async () => {
         console.log('✅ MongoDB connected')
-        try {
-            await mongoose.connection.db.collection('courses').drop(); // name in lowercase
-            console.log('🗑️ "courses" collection dropped');
-        } catch (err) {
-            if (err.code === 26) {
-                console.log('ℹ️ "courses" collection does not exist');
-            } else {
-                console.error('❌ Error dropping collection:', err);
-            }
-        }
+        // try {
+        //     await mongoose.connection.db.collection('courses').drop(); // name in lowercase
+        //     console.log('🗑️ "courses" collection dropped');
+        // } catch (err) {
+        //     if (err.code === 26) {
+        //         console.log('ℹ️ "courses" collection does not exist');
+        //     } else {
+        //         console.error('❌ Error dropping collection:', err);
+        //     }
+        // }
     })
 .catch(err => console.error('❌ MongoDB connection error:', err));
 
@@ -33,7 +33,7 @@ const UserSchema = new mongoose.Schema({
     // Schema definition here
     username: String,
     password: String,
-    purchaseCources: [{
+    purchasedCources: [{
         type: mongoose.Schema.Types.ObjectId,
         ref:'Courses'
     }]
