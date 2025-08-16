@@ -52,8 +52,20 @@ router.post('/courses/:courseId', userMiddleware, async (req, res) => {
 
 
 
-router.get('/purchasedCourses', userMiddleware, (req, res) => {
+router.get('/purchasedCourses', userMiddleware, async (req, res) => {
     // Implement fetching purchased courses logic
+    const user = await User.findOne({
+        username: req.headers.username
+    })
+    const courses = await Courses.find({
+        _id:{
+            "$in" : user.purchasedCources
+        }
+    })
+    res.json({
+        courses : courses
+    })
+
 });
 
 module.exports = router
